@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {FileService} from './file.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angular-file-download';
+  title = 'Angular File Download';
+
+  constructor(private fileService: FileService) {
+  }
+
+  download() {
+    this.fileService.downloadFile().subscribe(response => {
+      //let blob:any = new Blob([response.blob()], { type: 'text/json; charset=utf-8' });
+      //const url= window.URL.createObjectURL(blob);
+      //window.open(url);
+      window.location.href = response.url;
+      //fileSaver.saveAs(blob, 'employees.json');
+    }), error => console.log('Error downloading the file'),
+      () => console.info('File downloaded successfully');
+  }
 }
